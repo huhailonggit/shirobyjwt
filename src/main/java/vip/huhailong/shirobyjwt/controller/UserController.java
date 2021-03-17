@@ -38,6 +38,6 @@ public class UserController {
         user.setPassword(hashPassword);
         userService.save(user);
         mailUtil.sendSimpleMail(user.getEnableMail());
-        return ResUtil.success("注册成功");
+        return ResUtil.success(null,"注册成功");
     }
 }
