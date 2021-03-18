@@ -26,29 +26,29 @@ import javax.servlet.http.HttpServletRequest;
 @Slf4j
 public class CustomExceptionHandler {
 
-    @ExceptionHandler
+    @ExceptionHandler(Exception.class)
     public ResEntity exceptionHandler(Exception e) {
         log.error("error message:" + e.getMessage());
-        log.error(e.getMessage());
+        e.printStackTrace();
         return ResUtil.error(ResEnum.SYSTEM_ERROR.getCode(),e.getMessage());
     }
-    @ExceptionHandler
+    @ExceptionHandler(UnauthenticatedException.class)
     public ResEntity exceptionHandler(UnauthenticatedException e) {
         log.error("error message:" + e.getMessage());
-        log.error(e.getMessage());
+        e.printStackTrace();;
         return ResUtil.error(ResEnum.UNAUTHORIZED.getCode(),"请先登录");
     }
 
-    @ExceptionHandler
+    @ExceptionHandler(UnauthorizedException.class)
     public ResEntity exceptionHandler(UnauthorizedException e) {
         log.error("error message:" + e.getMessage());
-        log.error(e.getMessage());
+        e.printStackTrace();
         return ResUtil.error(ResEnum.UNAUTHORIZED.getCode(),"暂无权限访问");
     }
 
-    @ExceptionHandler(AccountEnableException.class)
-    public ResEntity exceptionHandler(AccountEnableException e){
-        return ResUtil.error(ResEnum.UNAUTHORIZED.getCode(),"用户未激活");
+    @ExceptionHandler(AuthenticationException.class)
+    public ResEntity exceptionHandler(AuthenticationException e){
+        return ResUtil.error(ResEnum.UNAUTHORIZED.getCode(),e.getMessage());
     }
 
 }

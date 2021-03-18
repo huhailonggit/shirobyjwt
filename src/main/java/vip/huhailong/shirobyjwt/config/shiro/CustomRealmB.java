@@ -1,5 +1,6 @@
 package vip.huhailong.shirobyjwt.config.shiro;
 
+import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -7,10 +8,11 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import vip.huhailong.shirobyjwt.entity.User;
 import vip.huhailong.shirobyjwt.service.IUserService;
+import vip.huhailong.shirobyjwt.util.HttpUtils;
 import vip.huhailong.shirobyjwt.util.JwtUtil;
+import vip.huhailong.shirobyjwt.util.ResUtil;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -62,25 +64,25 @@ public class CustomRealmB extends AuthorizingRealm {
     }
 
     @Override
-    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken){
+    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         //authenticationToken 来自JwtFilter 种的executeLogin
         if(authenticationToken == null){
-            throw new AuthenticationException("请先登录");
+            throw new AccountEnableException("请先登录");
         }
         String token = authenticationToken.getCredentials().toString();
         String username = JwtUtil.getUsername(token);
         if (username == null) {
-            throw new AuthenticationException("token校验失败");
+            throw new AccountEnableException("token校验失败");
         }
         User user = userService.getUserByUsername(username);
         if (user == null) {
-            throw new UnknownAccountException("用户不存在");
+            throw new AccountEnableException("用户不存在");
         }
         if (!JwtUtil.verify(token, username, user.getPassword())) {
-            throw new AuthenticationException("用户名或密码错误");
+            throw new AccountEnableException("用户名或密码错误");
         }
         if(!user.getEnable()){
-            throw new AccountEnableException("用户未激活");
+            throw new AccountEnableException("账号未激活");
         }
         return new SimpleAuthenticationInfo(token, token, getName());
     }

@@ -59,19 +59,19 @@ public class ShiroConfig {
         return manager;
     }
 
-    @Bean
-    public CookieRememberMeManager rememberMeManager(){
-        CookieRememberMeManager cookieRememberMeManager = new CookieRememberMeManager();
-        cookieRememberMeManager.setCookie(rememberMeCookie());
-        return cookieRememberMeManager;
-    }
-
-    @Bean
-    public SimpleCookie rememberMeCookie(){
-        SimpleCookie simpleCookie = new SimpleCookie("rememberMe");
-        simpleCookie.setMaxAge(259200);
-        return simpleCookie;
-    }
+//    @Bean
+//    public CookieRememberMeManager rememberMeManager(){
+//        CookieRememberMeManager cookieRememberMeManager = new CookieRememberMeManager();
+//        cookieRememberMeManager.setCookie(rememberMeCookie());
+//        return cookieRememberMeManager;
+//    }
+//
+//    @Bean
+//    public SimpleCookie rememberMeCookie(){
+//        SimpleCookie simpleCookie = new SimpleCookie("rememberMe");
+//        simpleCookie.setMaxAge(259200);
+//        return simpleCookie;
+//    }
 
     @Bean
     public ShiroFilterFactoryBean shiroFilterFactoryBean(DefaultSecurityManager securityManager){

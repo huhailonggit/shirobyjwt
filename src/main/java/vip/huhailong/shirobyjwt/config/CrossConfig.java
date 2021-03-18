@@ -13,8 +13,8 @@ import javax.servlet.http.HttpServletResponse;
  * @Date 2021/3/17.
  */
 @Slf4j
-@Component
-public class CrossConfig implements Filter {
+//@Component
+public class CrossConfig implements Filter{
 
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain){
