@@ -1,13 +1,11 @@
 package vip.huhailong.shirobyjwt.controller;
 
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import vip.huhailong.shirobyjwt.entity.ResEntity;
 import vip.huhailong.shirobyjwt.entity.User;
 import vip.huhailong.shirobyjwt.service.IUserService;
@@ -39,5 +37,11 @@ public class UserController {
         userService.save(user);
         mailUtil.sendSimpleMail(user.getEnableMail());
         return ResUtil.success(null,"注册成功");
+    }
+
+    @GetMapping("/getUserInfoOne")
+    @RequiresRoles({"user","admin"})
+    public ResEntity getUserInfoOne(String username){
+        return ResUtil.success(userService.getUserByUsername(username),"获取成功");
     }
 }
