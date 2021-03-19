@@ -1,5 +1,7 @@
 package vip.huhailong.shirobyjwt.util;
 
+import lombok.extern.slf4j.Slf4j;
+
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
@@ -7,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+@Slf4j
 public class HttpUtils {
 
     public static void responseContent(String jsonString, ServletRequest httpRequest, ServletResponse httpResponse){
@@ -23,11 +26,13 @@ public class HttpUtils {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
 
+
         PrintWriter out = null;
         try {
             out = response.getWriter();
             out.println(jsonString);
         } catch (IOException e) {
+            log.info("出现异常"+e.getMessage());
             e.printStackTrace();
         }finally {
             assert out != null;

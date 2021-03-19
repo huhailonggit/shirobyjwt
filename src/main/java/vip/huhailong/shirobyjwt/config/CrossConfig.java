@@ -1,6 +1,7 @@
 package vip.huhailong.shirobyjwt.config;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
@@ -13,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
  * @Date 2021/3/17.
  */
 @Slf4j
-//@Component
+@Configuration
 public class CrossConfig implements Filter{
 
     @Override

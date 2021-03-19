@@ -1,6 +1,5 @@
 package vip.huhailong.shirobyjwt.config.shiro;
 
-import org.apache.shiro.authc.AccountException;
 import org.apache.shiro.authc.AuthenticationException;
 
 /**

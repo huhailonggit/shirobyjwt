@@ -84,6 +84,12 @@ public class CustomRealmB extends AuthorizingRealm {
         if(!user.getEnable()){
             throw new AccountEnableException("账号未激活");
         }
+//        if(user.getLocked()){
+//            throw new LockedAccountException("账号被锁定");
+//        }
+//        if(user.getExpire()){
+//            throw new ExpireException("账号已过期");
+//        }
         return new SimpleAuthenticationInfo(token, token, getName());
     }
 }

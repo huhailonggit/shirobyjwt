@@ -8,6 +8,7 @@ import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import vip.huhailong.shirobyjwt.config.shiro.AccountEnableException;
 import vip.huhailong.shirobyjwt.config.shiro.ExpireException;
@@ -55,5 +56,10 @@ public class ShiroController {
     public ResEntity logout() {
         SecurityUtils.getSubject().logout();
         return ResUtil.success(null, "退出成功");
+    }
+
+    @RequestMapping("/401")
+    public ResEntity unauthorized(){
+        return ResUtil.error(ResEnum.UNAUTHORIZED.getCode(),"401");
     }
 }
