@@ -2,13 +2,10 @@ package vip.huhailong.shirobyjwt.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import vip.huhailong.shirobyjwt.entity.ResEntity;
 import vip.huhailong.shirobyjwt.entity.User;
-import vip.huhailong.shirobyjwt.enums.ResEnum;
 import vip.huhailong.shirobyjwt.service.IUserService;
 import vip.huhailong.shirobyjwt.util.HttpUtils;
 import vip.huhailong.shirobyjwt.util.JwtUtil;
@@ -28,7 +25,8 @@ import java.io.IOException;
 public class PageController {
     @Autowired
     IUserService userService;
-
+    @Value("${server-mail.url}")
+    private String pageUrl;
     @GetMapping("/enableUser")
     public void enableUser(String token, HttpServletRequest request, HttpServletResponse response) throws IOException {
         String username = JwtUtil.getUsername(token);
@@ -43,6 +41,6 @@ public class PageController {
         }
         user.setEnable(true);
         userService.updateById(user);
-        response.sendRedirect("http://localhost:8080/");
+        response.sendRedirect(pageUrl);
     }
 }

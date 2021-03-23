@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import vip.huhailong.shirobyjwt.config.shiro.AccountEnableException;
-import vip.huhailong.shirobyjwt.config.shiro.ExpireException;
 import vip.huhailong.shirobyjwt.entity.ResEntity;
 import vip.huhailong.shirobyjwt.entity.User;
 import vip.huhailong.shirobyjwt.enums.ResEnum;
