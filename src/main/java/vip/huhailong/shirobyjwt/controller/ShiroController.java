@@ -6,6 +6,7 @@ import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +19,10 @@ import vip.huhailong.shirobyjwt.enums.ResEnum;
 import vip.huhailong.shirobyjwt.service.IUserService;
 import vip.huhailong.shirobyjwt.util.JwtUtil;
 import vip.huhailong.shirobyjwt.util.ResUtil;
+import vip.huhailong.shirobyjwt.util.SendMailUtil;
+
+import javax.mail.MessagingException;
+import javax.xml.transform.Result;
 
 /**
  * @author Huhailong
@@ -29,10 +34,17 @@ public class ShiroController {
 
     @Autowired
     IUserService userService;
+    @Autowired
+    SendMailUtil mailUtil;
+    @Value("${server-mail.host}")
+    private String enableUrl;
 
     @PostMapping("/login")
-    public ResEntity login(String username, String password) {
+    public ResEntity login(String username, String password) throws MessagingException {
         User user = userService.getUserByUsername(username);
+        if(user == null){
+            return ResUtil.error(ResEnum.UNAUTHORIZED.getCode(),"用户不存在，请先注册");
+        }
         String hashPassword = user.getPassword();
         password = new SimpleHash(Sha256Hash.ALGORITHM_NAME, password, ByteSource.Util.bytes(username), 16).toBase64();
         if (!hashPassword.equals(password)) {
@@ -45,7 +57,10 @@ public class ShiroController {
             return ResUtil.error(ResEnum.UNAUTHORIZED.getCode(), "用户已过期");
         }
         if (!user.getEnable()) {
-            return ResUtil.error(ResEnum.UNAUTHORIZED.getCode(), "用户未激活");
+            String sign = JwtUtil.sign(user.getUsername(), hashPassword);
+            String html = "<!DOCTYPE html><html><head>\t<title>邮箱验证</title>\t<style>\t\t.box{\t\t\ttext-align: center;\t\t}\t\timg{\t\t\twidth:20%;\t\t}\t</style></head><body>\t<div class=\"box\">\t\t<h3>欢迎注册<a href=\"https://www.huhailong.vip\">huhailong.vip</a></h3>\t\t<img src=\"https://www.huhailong.vip/img/wx.jpg\"><br>\t\t<p>点击下面的链接进行验证注册，如果过期请重新注册</p>\t\t<a href=\""+enableUrl+sign+"\"><b>点击这里进行验证</b></a>\t\t</div></body></html>";
+            mailUtil.sendSimpleMail(user.getEnableMail(),"Huhailong-注册验证信息",html);
+            return ResUtil.error(ResEnum.UNAUTHORIZED.getCode(), "用户未激活,激活邮件已重新发送");
         }
         //登录成功生成token
         String sign = JwtUtil.sign(username, password);//这里暂时把盐值设置未用户名，后期会在注册时候生成一个对应的值

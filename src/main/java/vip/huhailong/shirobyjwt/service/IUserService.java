@@ -11,4 +11,6 @@ import vip.huhailong.shirobyjwt.entity.User;
 public interface IUserService extends IService<User> {
 
     User getUserByUsername(String username);
+
+    int initUserRole(User user);
 }

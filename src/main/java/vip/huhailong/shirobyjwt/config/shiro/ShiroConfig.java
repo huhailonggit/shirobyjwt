@@ -82,7 +82,7 @@ public class ShiroConfig {
         customFilters.put("jwt",new JwtFilter());
         Map<String,String> filterMap = new LinkedHashMap<>();
 //        filterMap.put("/login","anon");
-//        filterMap.put("/user/register","anon");
+        filterMap.put("/user/register","anon");
 //        filterMap.put("/api/**","anon");
         filterMap.put("/**","jwt");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterMap);

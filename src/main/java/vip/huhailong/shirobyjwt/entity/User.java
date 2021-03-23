@@ -28,5 +28,6 @@ public class User implements Serializable {
     private Boolean locked;         //是否锁定
     private Boolean expire;         //是否过期
     private String createTime;
+    @TableField(exist = false)
     private List<Role> roleList;    //角色列表
 }

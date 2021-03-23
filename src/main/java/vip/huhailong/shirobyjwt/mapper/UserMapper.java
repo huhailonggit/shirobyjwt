@@ -17,4 +17,6 @@ public interface UserMapper extends BaseMapper<User> {
     List<Role> getRoleByUserId(@Param("id") String id);
 
     User getUserByUsername(@Param("username") String username);
+
+    int initUserRole(@Param("userId")String userId);
 }

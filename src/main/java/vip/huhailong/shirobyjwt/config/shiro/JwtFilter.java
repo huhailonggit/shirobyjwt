@@ -54,14 +54,13 @@ public class JwtFilter extends BasicHttpAuthenticationFilter {
         return true;
     }
 
-    @SneakyThrows
     @Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
         log.info("是否拦截"+isLoginAttempt(request,response));
         if (isLoginAttempt(request, response)) {
             try {
                 executeLogin(request, response);
-            } catch (AccountEnableException e) {
+            } catch (Exception e) {
                 ResEntity error = ResUtil.error(ResEnum.UNAUTHORIZED.getCode(), e.getMessage());
                 HttpUtils.responseContent(JSONObject.toJSONString(error),request,response);
             }

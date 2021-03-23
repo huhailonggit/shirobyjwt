@@ -21,4 +21,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     public User getUserByUsername(String username) {
         return userMapper.getUserByUsername(username);
     }
+
+    @Override
+    public int initUserRole(User user) {
+        return userMapper.initUserRole(user.getId());
+    }
 }

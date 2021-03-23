@@ -5,13 +5,20 @@ import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import vip.huhailong.shirobyjwt.entity.ResEntity;
 import vip.huhailong.shirobyjwt.entity.User;
+import vip.huhailong.shirobyjwt.enums.ResEnum;
 import vip.huhailong.shirobyjwt.service.IUserService;
+import vip.huhailong.shirobyjwt.util.JwtUtil;
 import vip.huhailong.shirobyjwt.util.ResUtil;
 import vip.huhailong.shirobyjwt.util.SendMailUtil;
 import vip.huhailong.shirobyjwt.util.TimeUtil;
+
+import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Huhailong
@@ -25,23 +32,30 @@ public class UserController {
     private IUserService userService;
     @Autowired
     SendMailUtil mailUtil;
+    @Value("${server-mail.host}")
+    private String enableUrl;
 
+    @Transactional
     @PostMapping("/register")
-    public ResEntity register(@RequestBody User user){
+    public ResEntity register(@RequestBody User user) throws MessagingException {
         user.setCreateTime(TimeUtil.getDateTime());
         user.setEnable(false);
-        user.setLocked(true);
+        user.setLocked(false);
         user.setExpire(false);
         String hashPassword = new SimpleHash(Sha256Hash.ALGORITHM_NAME,user.getPassword(), ByteSource.Util.bytes(user.getUsername()),16).toBase64();
         user.setPassword(hashPassword);
         userService.save(user);
-        mailUtil.sendSimpleMail(user.getEnableMail());
+        userService.initUserRole(user);
+        String sign = JwtUtil.sign(user.getUsername(), hashPassword);
+        String html = "<!DOCTYPE html><html><head>\t<title>邮箱验证</title>\t<style>\t\t.box{\t\t\ttext-align: center;\t\t}\t\timg{\t\t\twidth:20%;\t\t}\t</style></head><body>\t<div class=\"box\">\t\t<h3>欢迎注册<a href=\"https://www.huhailong.vip\">huhailong.vip</a></h3>\t\t<img src=\"https://www.huhailong.vip/img/wx.jpg\"><br>\t\t<p>点击下面的链接进行验证注册，如果过期请重新注册</p>\t\t<a href=\""+enableUrl+sign+"\"><b>点击这里进行验证</b></a>\t\t</div></body></html>";
+        mailUtil.sendSimpleMail(user.getEnableMail(),"Huhailong-注册验证信息",html);
         return ResUtil.success(null,"注册成功");
     }
 
     @GetMapping("/getUserInfoOne")
-    @RequiresRoles({"user","admin"})
-    public ResEntity getUserInfoOne(String username){
-        return ResUtil.success(userService.getUserByUsername(username),"获取成功");
+    @RequiresRoles({"user"})
+    public ResEntity getUserInfoOne(HttpServletRequest request){
+        String token = request.getHeader("Authorization");
+        return ResUtil.success(userService.getUserByUsername(JwtUtil.getUsername(token)),"获取成功");
     }
 }

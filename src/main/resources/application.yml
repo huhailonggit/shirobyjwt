@@ -32,3 +32,6 @@ mybatis-plus:
   mapper-locations: classpath:mapper/*.xml
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+server-mail:
+  host: 'http://localhost:8081/shirobyjwt/page/enableUser?token='
+  form: 'huhailong@huhailong.vip'

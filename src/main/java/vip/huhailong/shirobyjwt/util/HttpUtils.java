@@ -26,18 +26,18 @@ public class HttpUtils {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
 
-
         PrintWriter out = null;
         try {
             out = response.getWriter();
-            out.println(jsonString);
+            out.write(jsonString);
         } catch (IOException e) {
             log.info("出现异常"+e.getMessage());
-            e.printStackTrace();
+//            e.printStackTrace();
         }finally {
-            assert out != null;
-            out.flush();
-            out.close();
+            if(out != null){
+                out.flush();
+                out.close();
+            }
         }
 
     }

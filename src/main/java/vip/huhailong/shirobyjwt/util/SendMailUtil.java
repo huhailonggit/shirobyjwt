@@ -1,11 +1,17 @@
 package vip.huhailong.shirobyjwt.util;
 
 import com.alibaba.fastjson.JSONObject;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMailMessage;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import java.time.LocalDateTime;
 
 /**
@@ -13,19 +19,22 @@ import java.time.LocalDateTime;
  * @Description
  * @Date 2021/3/17.
  */
+@Slf4j
 @Component
 public class SendMailUtil {
     @Autowired
     private JavaMailSender javaMailSender;
+    @Value("${server-mail.form}")
+    private String formEmail;
 
-    public void sendSimpleMail(String toEmail) {
-        String time = LocalDateTime.now().toString();
-        SimpleMailMessage message1 = new SimpleMailMessage();
-        message1.setFrom("huhailong@huhailong.vip");
-        message1.setTo(toEmail);
-        message1.setSubject("注册激活验证");
-        message1.setText("请在5分钟内激活账户");
-        this.javaMailSender.send(message1);
-
+    public void sendSimpleMail(String toEmail, String subject, String content) throws MessagingException {
+        MimeMessage message = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message,true);
+        helper.setFrom(formEmail);
+        helper.setTo(toEmail);
+        helper.setSubject(subject);
+        helper.setText(content,true);
+        javaMailSender.send(message);
+        log.info("邮件发送成功");
     }
 }
