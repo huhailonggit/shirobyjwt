@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import vip.huhailong.shirobyjwt.entity.ResEntity;
 import vip.huhailong.shirobyjwt.entity.User;
-import vip.huhailong.shirobyjwt.enums.ResEnum;
 import vip.huhailong.shirobyjwt.service.IUserService;
 import vip.huhailong.shirobyjwt.util.JwtUtil;
 import vip.huhailong.shirobyjwt.util.ResUtil;
