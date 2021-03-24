@@ -23,7 +23,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     @Override
-    public int initUserRole(User user) {
-        return userMapper.initUserRole(user.getId());
+    public void initUserRole(User user) {
+        userMapper.initUserRole(user.getId());
+        userMapper.initUserInfo(user.getId());
     }
 }

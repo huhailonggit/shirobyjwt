@@ -12,5 +12,5 @@ public interface IUserService extends IService<User> {
 
     User getUserByUsername(String username);
 
-    int initUserRole(User user);
+    void initUserRole(User user);
 }

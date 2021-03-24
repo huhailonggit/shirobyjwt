@@ -1,5 +1,6 @@
 package vip.huhailong.shirobyjwt.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.apache.shiro.crypto.hash.SimpleHash;
@@ -10,6 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import vip.huhailong.shirobyjwt.entity.ResEntity;
 import vip.huhailong.shirobyjwt.entity.User;
+import vip.huhailong.shirobyjwt.entity.UserInfo;
+import vip.huhailong.shirobyjwt.enums.ResEnum;
+import vip.huhailong.shirobyjwt.service.IUserInfoService;
 import vip.huhailong.shirobyjwt.service.IUserService;
 import vip.huhailong.shirobyjwt.util.JwtUtil;
 import vip.huhailong.shirobyjwt.util.ResUtil;
@@ -30,6 +34,8 @@ public class UserController {
     @Autowired
     private IUserService userService;
     @Autowired
+    private IUserInfoService infoService;
+    @Autowired
     SendMailUtil mailUtil;
     @Value("${server-mail.host}")
     private String enableUrl;
@@ -37,6 +43,14 @@ public class UserController {
     @Transactional
     @PostMapping("/register")
     public ResEntity register(@RequestBody User user) throws MessagingException {
+        int userCount = userService.count(new QueryWrapper<User>().eq("username", user.getUsername()));
+        int mailCount = userService.count(new QueryWrapper<User>().eq("enable_mail", user.getEnableMail()));
+        if(userCount>0){
+            return ResUtil.error(ResEnum.SYSTEM_ERROR.getCode(),"用户名已存在");
+        }
+        if(mailCount>0){
+            return ResUtil.error(ResEnum.SYSTEM_ERROR.getCode(),"改邮箱已绑定");
+        }
         user.setCreateTime(TimeUtil.getDateTime());
         user.setEnable(false);
         user.setLocked(false);
@@ -56,5 +70,14 @@ public class UserController {
     public ResEntity getUserInfoOne(HttpServletRequest request){
         String token = request.getHeader("Authorization");
         return ResUtil.success(userService.getUserByUsername(JwtUtil.getUsername(token)),"获取成功");
+    }
+
+    @GetMapping("/getUserInfo")
+    @RequiresRoles("user")
+    public ResEntity getUserInfo(HttpServletRequest request){
+        String token = request.getHeader("Authorization");
+        User user = userService.getUserByUsername(JwtUtil.getUsername(token));
+        UserInfo info = infoService.getOne(new QueryWrapper<UserInfo>().eq("user_id",user.getId()));
+        return ResUtil.success(info,"获取用户信息成功");
     }
 }

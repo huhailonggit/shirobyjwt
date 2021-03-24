@@ -17,6 +17,7 @@ import java.util.Date;
 public class JwtUtil {
 
     public static final long EXPIRE_TIME = 30*60*1000;  //设置过期时间为30分钟
+    public static final long CODE_EXPIRE_TIME = 5*60*1000;  //验证码，有效期五分钟
 
     /**
      * 校验token
@@ -66,6 +67,13 @@ public class JwtUtil {
         Algorithm algorithm = Algorithm.HMAC256(secret);
         //添加username信息
         return JWT.create().withClaim("username",username).withExpiresAt(date).sign(algorithm);
+    }
+
+    public static String signCode(String mail, String code){
+        Date date = new Date(System.currentTimeMillis()+CODE_EXPIRE_TIME);
+        Algorithm algorithm = Algorithm.HMAC256(code);
+        //添加username信息
+        return JWT.create().withClaim("username",mail).withExpiresAt(date).sign(algorithm);
     }
 
 
