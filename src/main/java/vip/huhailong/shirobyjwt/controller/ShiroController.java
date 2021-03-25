@@ -1,9 +1,7 @@
 package vip.huhailong.shirobyjwt.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.wf.captcha.utils.CaptchaUtil;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.*;
 import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;

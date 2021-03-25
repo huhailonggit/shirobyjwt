@@ -7,7 +7,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.OutputStream;
 
 @Slf4j
 public class HttpUtils {
@@ -26,17 +26,22 @@ public class HttpUtils {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
 
-        PrintWriter out = null;
+        OutputStream out = null;
         try {
-            out = response.getWriter();
-            out.write(jsonString);
+            out = response.getOutputStream();
+            out.write(jsonString.getBytes());
+            out.flush();
+            out.close();
         } catch (IOException e) {
             log.info("出现异常"+e.getMessage());
 //            e.printStackTrace();
         }finally {
             if(out != null){
-                out.flush();
-                out.close();
+                try{
+                    out.close();
+                }catch (Exception e){
+                    log.error(e.getMessage());
+                }
             }
         }
 
