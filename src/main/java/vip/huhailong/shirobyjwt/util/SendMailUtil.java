@@ -8,6 +8,8 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMailMessage;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Component;
 
 import javax.mail.MessagingException;
@@ -20,6 +22,7 @@ import java.time.LocalDateTime;
  * @Date 2021/3/17.
  */
 @Slf4j
+@EnableAsync
 @Component
 public class SendMailUtil {
     @Autowired
@@ -27,6 +30,7 @@ public class SendMailUtil {
     @Value("${server-mail.form}")
     private String formEmail;
 
+    @Async
     public void sendSimpleMail(String toEmail, String subject, String content) throws MessagingException {
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message,true);

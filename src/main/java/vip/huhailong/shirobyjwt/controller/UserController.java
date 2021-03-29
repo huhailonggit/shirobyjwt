@@ -62,7 +62,8 @@ public class UserController {
         String sign = JwtUtil.sign(user.getUsername(), hashPassword);
         String html = "<!DOCTYPE html><html><head>\t<title>邮箱验证</title>\t<style>\t\t.box{\t\t\ttext-align: center;\t\t}\t\timg{\t\t\twidth:20%;\t\t}\t</style></head><body>\t<div class=\"box\">\t\t<h3>欢迎注册<a href=\"https://www.huhailong.vip\">huhailong.vip</a></h3>\t\t<img src=\"https://www.huhailong.vip/img/wx.jpg\"><br>\t\t<p>点击下面的链接进行验证注册，如果过期请重新注册</p>\t\t<a href=\""+enableUrl+sign+"\"><b>点击这里进行验证</b></a>\t\t</div></body></html>";
         mailUtil.sendSimpleMail(user.getEnableMail(),"Huhailong-注册验证信息",html);
-        return ResUtil.success(null,"注册成功");
+        System.out.println("注册成功");
+        return ResUtil.success(null,"注册成功，请前往邮箱激活");
     }
 
     @GetMapping("/getUserInfoOne")
