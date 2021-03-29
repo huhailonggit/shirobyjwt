@@ -15,6 +15,9 @@
     <insert id="initUserRole">
         insert into user_role (id, user_id, role_id) values (replace(uuid(),'-',''),#{userId},'4c55a4e487c411ebb1145405db8174c1')
     </insert>
+    <insert id="initUserInfo">
+        insert into user_info (id,user_id) values (replace(uuid(),'-',''),#{userId})
+    </insert>
 
     <select id="getUserByUsername" resultMap="userMap">
         select id, username, password, enable_mail, enable, locked, expire, create_time from user where username = #{username}
