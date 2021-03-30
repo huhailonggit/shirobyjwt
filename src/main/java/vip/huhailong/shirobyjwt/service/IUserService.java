@@ -2,6 +2,7 @@ package vip.huhailong.shirobyjwt.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import vip.huhailong.shirobyjwt.entity.User;
+import vip.huhailong.shirobyjwt.entity.vo.UserFullInfo;
 
 /**
  * @author Huhailong

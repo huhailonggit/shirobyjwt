@@ -1,6 +1,7 @@
 package vip.huhailong.shirobyjwt.entity;
 
 import lombok.Data;
+import vip.huhailong.shirobyjwt.enums.ResEnum;
 
 /**
  * @author Huhailong
@@ -11,7 +12,7 @@ import lombok.Data;
 public class ResEntity {
     private Boolean status;
     private String type;
-    private Integer code;
+    private ResEnum code;
     private Object data;
     private String message;
 }

@@ -3,6 +3,7 @@ package vip.huhailong.shirobyjwt.service.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import vip.huhailong.shirobyjwt.entity.User;
+import vip.huhailong.shirobyjwt.entity.vo.UserFullInfo;
 import vip.huhailong.shirobyjwt.mapper.UserMapper;
 import vip.huhailong.shirobyjwt.service.IUserService;
 

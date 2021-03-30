@@ -52,7 +52,7 @@ public class CustomFormAuthenticationFilter extends FormAuthenticationFilter {
                 return true;
             }
         }else{
-            ResEntity error = ResUtil.error(ResEnum.UNAUTHORIZED.getCode(), "未登录-请重新登录");
+            ResEntity error = ResUtil.error(ResEnum.UNAUTHORIZED, "未登录-请重新登录");
             HttpUtils.responseContent(JSONObject.toJSONString(error),request,response);
             return false;
         }

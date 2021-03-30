@@ -46,10 +46,10 @@ public class UserController {
         int userCount = userService.count(new QueryWrapper<User>().eq("username", user.getUsername()));
         int mailCount = userService.count(new QueryWrapper<User>().eq("enable_mail", user.getEnableMail()));
         if(userCount>0){
-            return ResUtil.error(ResEnum.SYSTEM_ERROR.getCode(),"用户名已存在");
+            return ResUtil.error(ResEnum.SYSTEM_ERROR,"用户名已存在");
         }
         if(mailCount>0){
-            return ResUtil.error(ResEnum.SYSTEM_ERROR.getCode(),"改邮箱已绑定");
+            return ResUtil.error(ResEnum.SYSTEM_ERROR,"改邮箱已绑定");
         }
         user.setCreateTime(TimeUtil.getDateTime());
         user.setEnable(false);

@@ -36,3 +36,6 @@ server-mail:
   host: 'https://www.huhailong.vip/shirobyjwt/page/enableUser?token='
   url: 'https://www.huhailong.vip/webproject/shirobyjwt'
   form: 'huhailong@huhailong.vip'
+file:
+  upload:
+    path: 'C:\\temp\\'

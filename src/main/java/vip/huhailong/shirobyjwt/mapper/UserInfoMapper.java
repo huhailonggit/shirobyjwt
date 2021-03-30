@@ -9,4 +9,5 @@ import vip.huhailong.shirobyjwt.entity.UserInfo;
  * @Date 2021/3/24.
  */
 public interface UserInfoMapper extends BaseMapper<UserInfo> {
+
 }

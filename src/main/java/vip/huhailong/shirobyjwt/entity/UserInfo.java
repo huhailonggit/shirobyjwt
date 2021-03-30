@@ -21,4 +21,5 @@ public class UserInfo {
     private String job;
     private String birthday;
     private String userId;
+    private String avatar;
 }

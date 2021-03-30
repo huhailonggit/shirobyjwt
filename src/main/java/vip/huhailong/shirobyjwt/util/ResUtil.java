@@ -13,13 +13,13 @@ public class ResUtil {
     public static ResEntity success(Object o, String message){
         ResEntity resEntity = new ResEntity();
         resEntity.setStatus(true);
-        resEntity.setCode(ResEnum.REQUEST_SUCCESS.getCode());
+        resEntity.setCode(ResEnum.REQUEST_SUCCESS);
         resEntity.setMessage(message);
         resEntity.setData(o);
         return resEntity;
     }
 
-    public static ResEntity error(Integer code, String message){
+    public static ResEntity error(ResEnum code, String message){
         ResEntity resEntity = new ResEntity();
         resEntity.setStatus(false);
         resEntity.setMessage(message);

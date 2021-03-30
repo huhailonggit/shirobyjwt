@@ -44,24 +44,24 @@ public class ShiroController {
     public ResEntity login(String username, String password) throws MessagingException {
         User user = userService.getUserByUsername(username);
         if(user == null){
-            return ResUtil.error(ResEnum.UNAUTHORIZED.getCode(),"用户不存在，请先注册");
+            return ResUtil.error(ResEnum.UNAUTHORIZED,"用户不存在，请先注册");
         }
         String hashPassword = user.getPassword();
         password = new SimpleHash(Sha256Hash.ALGORITHM_NAME, password, ByteSource.Util.bytes(username), 16).toBase64();
         if (!hashPassword.equals(password)) {
-            return ResUtil.error(ResEnum.UNAUTHORIZED.getCode(), "密码错误-请重试");
+            return ResUtil.error(ResEnum.UNAUTHORIZED, "密码错误-请重试");
         }
         if (user.getLocked()) {
-            return ResUtil.error(ResEnum.UNAUTHORIZED.getCode(), "用户被锁定");
+            return ResUtil.error(ResEnum.UNAUTHORIZED, "用户被锁定");
         }
         if (user.getExpire()) {
-            return ResUtil.error(ResEnum.UNAUTHORIZED.getCode(), "用户已过期");
+            return ResUtil.error(ResEnum.UNAUTHORIZED, "用户已过期");
         }
         if (!user.getEnable()) {
             String sign = JwtUtil.sign(user.getUsername(), hashPassword);
             String html = "<!DOCTYPE html><html><head>\t<title>邮箱验证</title>\t<style>\t\t.box{\t\t\ttext-align: center;\t\t}\t\timg{\t\t\twidth:20%;\t\t}\t</style></head><body>\t<div class=\"box\">\t\t<h3>欢迎注册<a href=\"https://www.huhailong.vip\">huhailong.vip</a></h3>\t\t<img src=\"https://www.huhailong.vip/img/wx.jpg\"><br>\t\t<p>点击下面的链接进行验证注册，如果过期请重新注册</p>\t\t<a href=\""+enableUrl+sign+"\"><b>点击这里进行验证</b></a>\t\t</div></body></html>";
             mailUtil.sendSimpleMail(user.getEnableMail(),"Huhailong-注册验证信息",html);
-            return ResUtil.error(ResEnum.UNAUTHORIZED.getCode(), "用户未激活,激活邮件已重新发送");
+            return ResUtil.error(ResEnum.UNAUTHORIZED, "用户未激活,激活邮件已重新发送");
         }
         //登录成功生成token
         String sign = JwtUtil.sign(username, password);//这里暂时把盐值设置未用户名，后期会在注册时候生成一个对应的值
@@ -99,6 +99,6 @@ public class ShiroController {
 
     @RequestMapping("/401")
     public ResEntity unauthorized(){
-        return ResUtil.error(ResEnum.UNAUTHORIZED.getCode(),"401");
+        return ResUtil.error(ResEnum.UNAUTHORIZED,"401");
     }
 }

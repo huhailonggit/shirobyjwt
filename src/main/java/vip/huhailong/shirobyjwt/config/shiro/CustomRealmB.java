@@ -8,6 +8,7 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
+import vip.huhailong.shirobyjwt.entity.Role;
 import vip.huhailong.shirobyjwt.entity.User;
 import vip.huhailong.shirobyjwt.service.IUserService;
 import vip.huhailong.shirobyjwt.util.HttpUtils;
@@ -16,6 +17,7 @@ import vip.huhailong.shirobyjwt.util.ResUtil;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @program: shirobyjwt
@@ -56,8 +58,9 @@ public class CustomRealmB extends AuthorizingRealm {
         String username = JwtUtil.getUsername(principalCollection.toString());
         log.info("current token user {}", username);
         User user = userService.getUserByUsername(username);
-        Set<String> set = new HashSet<>();
-        user.getRoleList().forEach(role -> set.add(role.getRole()));
+        Set<String> set = user.getRoleList().stream().map(Role::getRole).collect(Collectors.toSet());
+//        Set<String> set = new HashSet<>();
+//        user.getRoleList().forEach(role -> set.add(role.getRole()));
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
         simpleAuthorizationInfo.setRoles(set);
         return simpleAuthorizationInfo;
@@ -84,12 +87,12 @@ public class CustomRealmB extends AuthorizingRealm {
         if(!user.getEnable()){
             throw new AccountEnableException("账号未激活");
         }
-//        if(user.getLocked()){
-//            throw new LockedAccountException("账号被锁定");
-//        }
-//        if(user.getExpire()){
-//            throw new ExpireException("账号已过期");
-//        }
+        if(user.getLocked()){
+            throw new LockedAccountException("账号被锁定");
+        }
+        if(user.getExpire()){
+            throw new ExpireException("账号已过期");
+        }
         return new SimpleAuthenticationInfo(token, token, getName());
     }
 }

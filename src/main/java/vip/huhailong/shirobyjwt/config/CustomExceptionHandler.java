@@ -26,25 +26,25 @@ public class CustomExceptionHandler {
         log.error("error message:" + e.getMessage());
 //        e.printStackTrace();
 
-        return ResUtil.error(ResEnum.SYSTEM_ERROR.getCode(),e.getMessage());
+        return ResUtil.error(ResEnum.SYSTEM_ERROR,e.getMessage());
     }
     @ExceptionHandler(UnauthenticatedException.class)
     public ResEntity exceptionHandler(UnauthenticatedException e) {
         log.error("error message:" + e.getMessage());
 //        e.printStackTrace();;
-        return ResUtil.error(ResEnum.UNAUTHORIZED.getCode(),"请先登录");
+        return ResUtil.error(ResEnum.UNAUTHORIZED,"请先登录");
     }
 
     @ExceptionHandler(UnauthorizedException.class)
     public ResEntity exceptionHandler(UnauthorizedException e) {
         log.error("error message:" + e.getMessage());
 //        e.printStackTrace();
-        return ResUtil.error(ResEnum.UNAUTHORIZED.getCode(),"暂无权限访问");
+        return ResUtil.error(ResEnum.UNAUTHORIZED,"暂无权限访问");
     }
 
     @ExceptionHandler(AuthenticationException.class)
     public ResEntity exceptionHandler(AuthenticationException e){
-        return ResUtil.error(ResEnum.UNAUTHORIZED.getCode(),e.getMessage());
+        return ResUtil.error(ResEnum.UNAUTHORIZED,e.getMessage());
     }
 
 }

@@ -36,3 +36,7 @@ server-mail:
   host: 'http://localhost:8081/shirobyjwt/page/enableUser?token='
   url: 'http://localhost:8080'
   form: 'huhailong@huhailong.vip'
+file:
+  upload:
+    path: 'C:\\temp\\'
+  url: 'http://127.0.0.1/img/'
