@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import vip.huhailong.shirobyjwt.entity.ResEntity;
@@ -47,7 +48,7 @@ public class UserInfoController {
         if(file==null){
             return ResUtil.error(ResEnum.SYSTEM_ERROR,"上传文件为空，请选择文件上传");
         }
-        String token = request.getHeader("Authorization");
+        String token = request.getHeader(HttpHeaders.AUTHORIZATION);
         String username = JwtUtil.getUsername(token);
         User currentUser = userService.getUserByUsername(username);
         if(username==null||currentUser==null){
@@ -74,13 +75,13 @@ public class UserInfoController {
 
     @GetMapping("/getUserInfo")
     public ResEntity getUserInfo(HttpServletRequest request){
-        String username = JwtUtil.getUsername(request.getHeader("Authorization"));
+        String username = JwtUtil.getUsername(request.getHeader(HttpHeaders.AUTHORIZATION));
         User user = userService.getOne(new QueryWrapper<User>().eq("username", username));
-        user.setPassword("**********");
         if(username==null||user==null){
             return ResUtil.error(ResEnum.UNAUTHORIZED,"token验证失败");
         }
         UserFullInfo info = new UserFullInfo();
+        user.setPassword("**********");
         info.setUser(user);
         info.setUserInfo(userInfoService.getOne(new QueryWrapper<UserInfo>().eq("user_id",user.getId())));
         return ResUtil.success(info,"查询成功");

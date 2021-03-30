@@ -3,6 +3,7 @@ package vip.huhailong.shirobyjwt.config.shiro;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
+import org.springframework.http.HttpHeaders;
 import vip.huhailong.shirobyjwt.entity.ResEntity;
 import vip.huhailong.shirobyjwt.enums.ResEnum;
 import vip.huhailong.shirobyjwt.util.HttpUtils;
@@ -27,7 +28,7 @@ public class JwtFilter extends BasicHttpAuthenticationFilter {
     @Override
     protected boolean isLoginAttempt(ServletRequest request, ServletResponse response) {
         HttpServletRequest req = (HttpServletRequest) request;
-        String authorization = req.getHeader("Authorization");
+        String authorization = req.getHeader(HttpHeaders.AUTHORIZATION);
         return authorization != null;
     }
 
@@ -37,7 +38,7 @@ public class JwtFilter extends BasicHttpAuthenticationFilter {
     @Override
     protected boolean executeLogin(ServletRequest request, ServletResponse response) throws Exception {
         HttpServletRequest req = (HttpServletRequest) request;
-        String authorization = req.getHeader("Authorization");
+        String authorization = req.getHeader(HttpHeaders.AUTHORIZATION);
         JWTToken token = new JWTToken(authorization);
         getSubject(request, response).login(token);
         return true;

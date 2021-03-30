@@ -7,6 +7,7 @@ import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import vip.huhailong.shirobyjwt.entity.ResEntity;
@@ -25,7 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Huhailong
- * @Description
+ * @Description user controller
  * @Date 2021/3/17.
  */
 @RestController
@@ -69,7 +70,7 @@ public class UserController {
     @GetMapping("/getUserInfoOne")
     @RequiresRoles({"user"})
     public ResEntity getUserInfoOne(HttpServletRequest request){
-        String token = request.getHeader("Authorization");
+        String token = request.getHeader(HttpHeaders.AUTHORIZATION);
         return ResUtil.success(userService.getUserByUsername(JwtUtil.getUsername(token)),"获取成功");
     }
 

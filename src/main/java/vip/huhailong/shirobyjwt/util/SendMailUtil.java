@@ -26,7 +26,7 @@ import java.time.LocalDateTime;
 @Component
 public class SendMailUtil {
     @Autowired
-    private JavaMailSender javaMailSender;
+    JavaMailSender javaMailSender;
     @Value("${server-mail.form}")
     private String formEmail;
 

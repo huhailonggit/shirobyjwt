@@ -9,7 +9,6 @@ import vip.huhailong.shirobyjwt.entity.User;
 import vip.huhailong.shirobyjwt.service.IUserService;
 import vip.huhailong.shirobyjwt.util.HttpUtils;
 import vip.huhailong.shirobyjwt.util.JwtUtil;
-import vip.huhailong.shirobyjwt.util.ResUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

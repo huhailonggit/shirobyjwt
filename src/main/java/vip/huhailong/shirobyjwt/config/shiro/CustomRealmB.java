@@ -11,9 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import vip.huhailong.shirobyjwt.entity.Role;
 import vip.huhailong.shirobyjwt.entity.User;
 import vip.huhailong.shirobyjwt.service.IUserService;
-import vip.huhailong.shirobyjwt.util.HttpUtils;
 import vip.huhailong.shirobyjwt.util.JwtUtil;
-import vip.huhailong.shirobyjwt.util.ResUtil;
 
 import java.util.HashSet;
 import java.util.Set;
