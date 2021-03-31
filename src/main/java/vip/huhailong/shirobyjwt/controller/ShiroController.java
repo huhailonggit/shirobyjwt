@@ -1,5 +1,8 @@
 package vip.huhailong.shirobyjwt.controller;
 
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.wf.captcha.GifCaptcha;
+import com.wf.captcha.SpecCaptcha;
 import com.wf.captcha.utils.CaptchaUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.crypto.hash.Sha256Hash;
@@ -12,19 +15,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 import vip.huhailong.shirobyjwt.entity.ResEntity;
 import vip.huhailong.shirobyjwt.entity.User;
 import vip.huhailong.shirobyjwt.enums.ResEnum;
 import vip.huhailong.shirobyjwt.service.IUserService;
 import vip.huhailong.shirobyjwt.util.JwtUtil;
+import vip.huhailong.shirobyjwt.util.MakeUUID;
 import vip.huhailong.shirobyjwt.util.ResUtil;
 import vip.huhailong.shirobyjwt.util.SendMailUtil;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.transform.Result;
 import java.io.IOException;
+import java.util.UUID;
 
 /**
  * @author Huhailong
@@ -89,7 +94,11 @@ public class ShiroController {
 
     @GetMapping("/captcha")
     public void captcha(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        CaptchaUtil.out(request,response);
+        GifCaptcha specCaptcha = new GifCaptcha(130,48,5);
+        String verCode = specCaptcha.text().toLowerCase();
+        String key = MakeUUID.getUUID(false);
+        //存入redis，设置过期时间
+
     }
 
     @GetMapping("/logout")

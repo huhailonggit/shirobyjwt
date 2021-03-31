@@ -3,6 +3,8 @@ package vip.huhailong.shirobyjwt.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -74,6 +76,7 @@ public class UserInfoController {
     }
 
     @GetMapping("/getUserInfo")
+    @RequiresRoles("user")
     public ResEntity getUserInfo(HttpServletRequest request){
         String username = JwtUtil.getUsername(request.getHeader(HttpHeaders.AUTHORIZATION));
         User user = userService.getOne(new QueryWrapper<User>().eq("username", username));
@@ -85,5 +88,11 @@ public class UserInfoController {
         info.setUser(user);
         info.setUserInfo(userInfoService.getOne(new QueryWrapper<UserInfo>().eq("user_id",user.getId())));
         return ResUtil.success(info,"查询成功");
+    }
+
+    @PostMapping("/updateUserInfo")
+    public ResEntity updateUserInfo(@RequestBody UserInfo userInfo){
+        userInfoService.updateById(userInfo);
+        return ResUtil.success(null,"更新成功");
     }
 }

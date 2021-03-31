@@ -73,14 +73,14 @@ public class CustomRealmB extends AuthorizingRealm {
         String token = authenticationToken.getCredentials().toString();
         String username = JwtUtil.getUsername(token);
         if (username == null) {
-            throw new AccountEnableException("token校验失败");
+            throw new AccountEnableException("token非法，请重新登录");
         }
         User user = userService.getUserByUsername(username);
         if (user == null) {
             throw new AccountEnableException("用户不存在");
         }
         if (!JwtUtil.verify(token, username, user.getPassword())) {
-            throw new AccountEnableException("用户名或密码错误");
+            throw new AccountEnableException("token非法，请重新登录");
         }
         if(!user.getEnable()){
             throw new AccountEnableException("账号未激活");

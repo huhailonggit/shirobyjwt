@@ -12,6 +12,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.time.LocalDateTime;
@@ -22,10 +23,10 @@ import java.time.LocalDateTime;
  * @Date 2021/3/17.
  */
 @Slf4j
-@EnableAsync
 @Component
+@EnableAsync
 public class SendMailUtil {
-    @Autowired
+    @Resource
     JavaMailSender javaMailSender;
     @Value("${server-mail.form}")
     private String formEmail;
