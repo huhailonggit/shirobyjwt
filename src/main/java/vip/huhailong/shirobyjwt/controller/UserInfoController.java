@@ -63,6 +63,7 @@ public class UserInfoController {
         String fileSuffix = FileNameUtil.getFileSuffix(Objects.requireNonNull(file.getOriginalFilename())); //获取文件类型
         String avatarName = currentUser.getId()+fileSuffix;
         File saveFile = new File(uploadPath+avatarName);
+        log.info("save image path:"+saveFile.getPath());
         if(!saveFile.exists()){
             boolean newFile = saveFile.createNewFile();
             if(!newFile){
