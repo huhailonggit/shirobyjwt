@@ -13,7 +13,7 @@ public class ResUtil {
     public static ResEntity success(Object o, String message){
         ResEntity resEntity = new ResEntity();
         resEntity.setStatus(true);
-        resEntity.setCode(ResEnum.REQUEST_SUCCESS);
+        resEntity.setCode(ResEnum.REQUEST_SUCCESS.getCode());
         resEntity.setMessage(message);
         resEntity.setData(o);
         return resEntity;
@@ -23,7 +23,7 @@ public class ResUtil {
         ResEntity resEntity = new ResEntity();
         resEntity.setStatus(false);
         resEntity.setMessage(message);
-        resEntity.setCode(code);
+        resEntity.setCode(code.getCode());
         return resEntity;
     }
 

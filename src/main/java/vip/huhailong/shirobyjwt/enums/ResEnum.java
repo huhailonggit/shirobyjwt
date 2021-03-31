@@ -1,7 +1,5 @@
 package vip.huhailong.shirobyjwt.enums;
-
 import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * @author Huhailong
  * @Description 响应枚举
@@ -14,14 +12,13 @@ public enum ResEnum {
     UNAUTHORIZED(403),
     ;
 
-    public final Integer code;
-
-    @JsonValue
-    public Integer getCode() {
-        return code;
-    }
+    public Integer code;
 
     ResEnum(Integer code){
         this.code = code;
+    }
+
+    public Integer getCode() {
+        return code;
     }
 }

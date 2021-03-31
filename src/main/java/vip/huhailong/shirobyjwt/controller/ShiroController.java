@@ -7,6 +7,7 @@ import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -100,5 +101,20 @@ public class ShiroController {
     @RequestMapping("/401")
     public ResEntity unauthorized(){
         return ResUtil.error(ResEnum.UNAUTHORIZED,"401");
+    }
+
+    @GetMapping("/keepAlive")
+    public ResEntity keepAlive(HttpServletRequest request){
+        String token = request.getHeader(HttpHeaders.AUTHORIZATION);
+        String username = JwtUtil.getUsername(token);
+        User user = userService.getUserByUsername(username);
+        if(username==null||user==null){
+            return ResUtil.error(ResEnum.UNAUTHORIZED,"token过期，请重新登录");
+        }
+        if(!JwtUtil.verify(token,username,user.getPassword())){
+            return ResUtil.error(ResEnum.UNAUTHORIZED,"token过期，请重新登录");
+        }
+        String sign = JwtUtil.sign(username, user.getPassword());   //生成新的token
+        return ResUtil.success(sign,"保活成功");
     }
 }

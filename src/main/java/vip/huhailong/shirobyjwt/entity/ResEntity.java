@@ -12,7 +12,7 @@ import vip.huhailong.shirobyjwt.enums.ResEnum;
 public class ResEntity {
     private Boolean status;
     private String type;
-    private ResEnum code;
+    private Integer code;
     private Object data;
     private String message;
 }

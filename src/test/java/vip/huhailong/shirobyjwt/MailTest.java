@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.boot.test.context.SpringBootTest;
+import vip.huhailong.shirobyjwt.enums.ResEnum;
 import vip.huhailong.shirobyjwt.util.FileNameUtil;
 import vip.huhailong.shirobyjwt.util.SendMailUtil;
 
@@ -31,5 +32,10 @@ public class MailTest {
         String fileName = "hailong.hu.txt";
         String fileSuffix = FileNameUtil.getFileSuffix(fileName);
         System.out.println(fileSuffix);
+    }
+
+    @Test
+    public void getEnum(){
+        System.out.println(ResEnum.UNAUTHORIZED);
     }
 }

@@ -16,7 +16,7 @@ import java.util.Date;
 @Slf4j
 public class JwtUtil {
 
-    public static final long EXPIRE_TIME = 30*60*1000;  //设置过期时间为30分钟
+    public static final long EXPIRE_TIME = 24 * 60 * 60 * 1000;  //设置过期时间为1天
     public static final long CODE_EXPIRE_TIME = 5*60*1000;  //验证码，有效期五分钟
 
     /**
