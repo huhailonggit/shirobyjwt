@@ -1,17 +1,12 @@
 package vip.huhailong.shirobyjwt.config.shiro;
 
-import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.cache.MemoryConstrainedCacheManager;
-import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.apache.shiro.mgt.*;
-import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
-import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
-import org.apache.shiro.web.servlet.SimpleCookie;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -81,9 +76,11 @@ public class ShiroConfig {
 //        customFilters.put("authc",new CustomFormAuthenticationFilter());
         customFilters.put("jwt",new JwtFilter());
         Map<String,String> filterMap = new LinkedHashMap<>();
-//        filterMap.put("/login","anon");
+        filterMap.put("/captcha","anon");
+        filterMap.put("/keepAlive","anon");
+        filterMap.put("/verForgetPassword","anon");
         filterMap.put("/user/register","anon");
-//        filterMap.put("/api/**","anon");
+        filterMap.put("/forgetPassword","anon");
         filterMap.put("/**","jwt");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterMap);
         return shiroFilterFactoryBean;

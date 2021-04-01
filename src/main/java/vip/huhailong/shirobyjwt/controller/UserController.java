@@ -23,6 +23,7 @@ import vip.huhailong.shirobyjwt.util.TimeUtil;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 /**
  * @author Huhailong
@@ -81,5 +82,29 @@ public class UserController {
         User user = userService.getUserByUsername(JwtUtil.getUsername(token));
         UserInfo info = infoService.getOne(new QueryWrapper<UserInfo>().eq("user_id",user.getId()));
         return ResUtil.success(info,"获取用户信息成功");
+    }
+
+    @PostMapping("/updatePassword")
+    public ResEntity updatePassword(@RequestBody Map<String,String> map, HttpServletRequest request){
+        String oldPassword = map.get("oldPassword");
+        String newPassword = map.get("newPassword");
+        if(oldPassword.isEmpty()||newPassword.isEmpty()){
+            return ResUtil.error(ResEnum.SYSTEM_ERROR,"密码不能为空");
+        }
+        String username = JwtUtil.getUsername(request.getHeader(HttpHeaders.AUTHORIZATION));
+        User user = userService.getUserByUsername(username);
+        if(username==null||user==null){
+            return ResUtil.error(ResEnum.UNAUTHORIZED,"token验证失败");
+        }
+        String oldHashPassword = new SimpleHash(Sha256Hash.ALGORITHM_NAME,oldPassword, ByteSource.Util.bytes(user.getUsername()),16).toBase64();
+        String currentPassword = user.getPassword();
+        if(oldHashPassword.equals(currentPassword)){
+            String newHashPassword = new SimpleHash(Sha256Hash.ALGORITHM_NAME, newPassword, ByteSource.Util.bytes(user.getUsername()), 16).toBase64();
+            user.setPassword(newHashPassword);
+            userService.updateById(user);
+            return ResUtil.success(null,"更新密码成功，请重新登录");
+        }else{
+            return ResUtil.error(ResEnum.UNAUTHORIZED,"旧密码输入有误");
+        }
     }
 }
