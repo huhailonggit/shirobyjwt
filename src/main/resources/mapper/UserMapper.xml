@@ -29,7 +29,7 @@
     <delete id="delRole">
         delete from user_role where user_id = #{userId} and role_id in(
         <foreach collection="list" item="item" index="index" separator=",">
-            #{item},
+            #{item}
         </foreach>
         )
     </delete>
