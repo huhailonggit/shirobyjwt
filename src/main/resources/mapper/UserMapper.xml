@@ -10,19 +10,46 @@
         <result column="locked" property="locked"/>
         <result column="expire" property="expire"/>
         <result column="create_time" property="createTime"/>
-        <collection property="roleList" column="id" select="vip.huhailong.shirobyjwt.mapper.UserMapper.getRoleByUserId"/>
+        <collection property="roleList" column="id"
+                    select="vip.huhailong.shirobyjwt.mapper.UserMapper.getRoleByUserId"/>
     </resultMap>
     <insert id="initUserRole">
-        insert into user_role (id, user_id, role_id) values (replace(uuid(),'-',''),#{userId},'4c55a4e487c411ebb1145405db8174c1')
+        insert into user_role (id, user_id, role_id)
+        values (replace(uuid(), '-', ''), #{userId}, '4c55a4e487c411ebb1145405db8174c1')
     </insert>
     <insert id="initUserInfo">
-        insert into user_info (id,user_id) values (replace(uuid(),'-',''),#{userId})
+        insert into user_info (id, user_id)
+        values (replace(uuid(), '-', ''), #{userId})
     </insert>
 
+    <insert id="addRole">
+        insert into user_role (id, user_id, role_id)
+        values (replace(uuid(), '-', ''), #{userId}, #{roleId})
+    </insert>
+    <delete id="delRole">
+        delete from user_role where user_id = #{userId} and role_id in(
+        <foreach collection="list" item="item" index="index" separator=",">
+            #{item},
+        </foreach>
+        )
+    </delete>
+
     <select id="getUserByUsername" resultMap="userMap">
-        select id, username, password, enable_mail, enable, locked, expire, create_time from user where username = #{username}
+        select id,
+               username,
+               password,
+               enable_mail,
+               enable,
+               locked,
+               expire,
+               create_time
+        from user
+        where username = #{username}
     </select>
     <select id="getRoleByUserId" resultType="vip.huhailong.shirobyjwt.entity.Role">
-        select r.id as id, r.role as role, r.role_name as roleName from role r left join user_role ur on r.id = ur.role_id left join user u on ur.user_id = u.id where ur.user_id = #{id}
+        select r.id, r.role, r.role_name as roleName
+        from role r
+                 left join user_role ur on r.id = ur.role_id
+        where ur.user_id = #{id}
     </select>
 </mapper>

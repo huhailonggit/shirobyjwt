@@ -2,6 +2,7 @@ package vip.huhailong.shirobyjwt.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresRoles;
@@ -14,6 +15,7 @@ import vip.huhailong.shirobyjwt.entity.ResEntity;
 import vip.huhailong.shirobyjwt.entity.User;
 import vip.huhailong.shirobyjwt.entity.UserInfo;
 import vip.huhailong.shirobyjwt.entity.vo.UserFullInfo;
+import vip.huhailong.shirobyjwt.entity.vo.UserInfoVO;
 import vip.huhailong.shirobyjwt.enums.ResEnum;
 import vip.huhailong.shirobyjwt.service.IUserInfoService;
 import vip.huhailong.shirobyjwt.service.IUserService;
@@ -95,5 +97,11 @@ public class UserInfoController {
     public ResEntity updateUserInfo(@RequestBody UserInfo userInfo){
         userInfoService.updateById(userInfo);
         return ResUtil.success(null,"更新成功");
+    }
+
+    @GetMapping("/getUserInfoList")
+    public ResEntity getUserInfoList(UserInfoVO vo){
+        IPage<UserInfoVO> userInfoList = userInfoService.getUserInfoList(vo);
+        return ResUtil.success(userInfoList,"查询成功");
     }
 }

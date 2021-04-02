@@ -5,6 +5,8 @@ import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import vip.huhailong.shirobyjwt.entity.ResEntity;
+import vip.huhailong.shirobyjwt.util.ResUtil;
 
 /**
  * @author Huhailong
@@ -19,5 +21,10 @@ public class AdminController {
     @RequiresRoles("admin")
     public String test(){
         return "request admin api successful!";
+    }
+
+    @GetMapping("/getUserInfoList")
+    public ResEntity getUserInfoList(){
+        return ResUtil.success(null,"查询成功");
     }
 }

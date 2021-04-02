@@ -1,6 +1,8 @@
 package vip.huhailong.shirobyjwt.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import lombok.val;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.apache.shiro.crypto.hash.SimpleHash;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import vip.huhailong.shirobyjwt.entity.ResEntity;
 import vip.huhailong.shirobyjwt.entity.User;
 import vip.huhailong.shirobyjwt.entity.UserInfo;
+import vip.huhailong.shirobyjwt.entity.vo.UserRoleVO;
 import vip.huhailong.shirobyjwt.enums.ResEnum;
 import vip.huhailong.shirobyjwt.service.IUserInfoService;
 import vip.huhailong.shirobyjwt.service.IUserService;
@@ -23,6 +26,7 @@ import vip.huhailong.shirobyjwt.util.TimeUtil;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -107,4 +111,55 @@ public class UserController {
             return ResUtil.error(ResEnum.UNAUTHORIZED,"旧密码输入有误");
         }
     }
+
+    @PostMapping("/lockedUsers")
+    public ResEntity lockedUsers(@RequestBody List<String> userIds){
+        userService.update(new UpdateWrapper<User>().in("id",userIds).set("locked",1));
+        return ResUtil.success(null,"更新成功");
+    }
+
+    @PostMapping("/unLockedUsers")
+    public ResEntity unLockedUsers(@RequestBody List<String> userIds){
+        userService.update(new UpdateWrapper<User>().in("id",userIds).set("locked",0));
+        return ResUtil.success(null,"更新成功");
+    }
+
+    @PostMapping("/deleteUsers")
+    public ResEntity deleteUsers(@RequestBody List<String> userIds){
+        userService.update(new UpdateWrapper<User>().in("id",userIds).set("expire",1)); //逻辑删除
+        return ResUtil.success(null,"删除成功");
+    }
+
+    @PostMapping("/findBackUsers")
+    public ResEntity findBackUsers(@RequestBody List<String> userIds){
+        userService.update(new UpdateWrapper<User>().in("id",userIds).set("expire",0)); //恢复用户
+        return ResUtil.success(null,"恢复成功");
+    }
+
+    @GetMapping("/getExpireUserList")
+    public ResEntity getExpireUserList(){
+        List<User> expireUser = userService.list(new QueryWrapper<User>().select("id","username","enable_mail").eq("expire", 1));
+        return ResUtil.success(expireUser,"查询成功");
+    }
+
+    @GetMapping("/getRoleByUserId")
+    public ResEntity getRoleByUserId(String userId) {
+        return ResUtil.success(userService.getRoleListByUserId(userId),"查询角色成功");
+    }
+
+    @PostMapping("/addRole")
+    public ResEntity addRole(@RequestBody Map<String,String> map){
+        String userId = map.get("userId");
+        String roleId = map.get("roleId");
+        return ResUtil.success(userService.addRole(userId,roleId),"添加成功");
+    }
+
+    @PostMapping("/delRole")
+    public ResEntity delRole(@RequestBody UserRoleVO vo){
+        String userId = vo.getUserId();
+        List<String> roleIds = vo.getRoleIds();
+        return ResUtil.success(userService.delRole(userId,roleIds),"删除成功");
+    }
+
+
 }
