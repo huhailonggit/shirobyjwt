@@ -11,6 +11,7 @@ import lombok.Data;
 public class BaseEntity {
     private Integer pageNum;
     private Integer pageSize;
+    private String likeName;
 
     public boolean hasPage(){
         return this.pageNum != null && this.pageSize != null;
