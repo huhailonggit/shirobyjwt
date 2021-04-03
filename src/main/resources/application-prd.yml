@@ -14,7 +14,7 @@ spring:
     password: hhl@MySQL_1121
   mail:
     host: smtp.exmail.qq.com
-    username: huhailong@huhailong.vip
+    username: ********
     password: Hhl.vip110120119
     default-encoding: utf-8
     port: 465
@@ -38,4 +38,5 @@ server-mail:
   form: 'huhailong@huhailong.vip'
 file:
   upload:
-    path: 'C:\\temp\\'
+    path: '/data/img/avatar/'
+  url: 'https://www.huhailong.vip/img/avatar/'

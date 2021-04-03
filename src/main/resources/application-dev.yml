@@ -8,13 +8,13 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/shirobyjwt?useSSL=true&serverTimezone=UTC&allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
+    url: jdbc:mysql://192.168.1.110:3306/shirobyjwt?useSSL=true&serverTimezone=UTC&allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
     username: root
-    password: huhailong
+    password: hhl@MySQL_1121
   mail:
     host: smtp.exmail.qq.com
     username: huhailong@huhailong.vip
-    password: Hhl.vip110120119
+    password: ********
     default-encoding: utf-8
     port: 465
     properties:
