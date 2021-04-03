@@ -22,5 +22,7 @@ public interface UserMapper extends BaseMapper<User> {
 
     int initUserInfo(@Param("userId") String userId);
 
+    int addRole(@Param("userId")String userId, @Param("roleId") String roleId);
 
+    int delRole(@Param("userId")String userId, @Param("list") List<String> list);
 }

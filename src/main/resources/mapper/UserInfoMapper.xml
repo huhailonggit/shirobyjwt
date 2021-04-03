@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="vip.huhailong.shirobyjwt.mapper.UserInfoMapper">
+
+    <select id="getUserInfoList" resultType="vip.huhailong.shirobyjwt.entity.vo.UserInfoVO">
+        select u.id as userId,
+        u.username as username,
+        u.enable_mail as enableMail,
+        u.enable as enable,
+        u.locked as locked,
+        ui.avatar as avatar,
+        ui.nick_name as nickName,
+        ui.gender as gender,
+        ui.phone as phone,
+        ui.job as job,
+        ui.birthday as birthday
+        from user u
+        left join user_info ui on u.id = ui.user_id
+        <where>
+            u.expire = 0
+            <if test="pojo.username!=null and pojo.username!=''">and u.username = #{pojo.username}</if>
+            <if test="pojo.enableMail!=null and pojo.enableMail!=''">and u.enable_mail = #{pojo.enableMail}</if>
+            <if test="pojo.nickName!=null and pojo.nickName!=''">and ui.nick_name LIKE CONCAT('%',#{pojo.nickName},'%')
+            </if>
+            <if test="pojo.gender!=null and pojo.gender!=''">and u.gender = #{pojo.gender}</if>
+            <if test="pojo.gender!=null and pojo.gender!=''">and u.gender = #{pojo.gender}</if>
+        </where>
+        order by u.create_time desc
+    </select>
+</mapper>
