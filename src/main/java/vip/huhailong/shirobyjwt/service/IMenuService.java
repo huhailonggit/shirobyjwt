@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import vip.huhailong.shirobyjwt.entity.BaseEntity;
 import vip.huhailong.shirobyjwt.entity.Menu;
+import vip.huhailong.shirobyjwt.entity.Role;
+import vip.huhailong.shirobyjwt.entity.vo.MenuRoleVO;
 
 import java.util.List;
 
@@ -18,4 +20,10 @@ public interface IMenuService extends IService<Menu> {
     IPage<Menu> getMenuList(BaseEntity entity);
 
     List<Menu> getMenuByUser(String username);
+
+    void addMenu(Menu menu);
+
+    void bindRole(MenuRoleVO vo);
+
+    List<Role> currentRole(String menuId);
 }

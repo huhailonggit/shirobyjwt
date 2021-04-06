@@ -6,9 +6,12 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import vip.huhailong.shirobyjwt.entity.BaseEntity;
 import vip.huhailong.shirobyjwt.entity.Menu;
+import vip.huhailong.shirobyjwt.entity.Role;
 import vip.huhailong.shirobyjwt.entity.User;
+import vip.huhailong.shirobyjwt.entity.vo.MenuRoleVO;
 import vip.huhailong.shirobyjwt.mapper.MenuMapper;
 import vip.huhailong.shirobyjwt.service.IMenuService;
 import vip.huhailong.shirobyjwt.service.IUserService;
@@ -35,12 +38,34 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
             page.setCurrent(entity.getPageNum());
             page.setSize(entity.getPageSize());
         }
-        return menuMapper.selectPage(page, new QueryWrapper<Menu>().like("menu_name", entity.getLikeName()));
+        QueryWrapper<Menu> queryWrapper = new QueryWrapper<>();
+        if(entity.getLikeName()!=null&&!entity.getLikeName().isEmpty()){
+            queryWrapper.like("menu_name",entity.getLikeName());
+        }
+        return menuMapper.selectPage(page,queryWrapper.orderByDesc("menu_order"));
     }
 
     @Override
     public List<Menu> getMenuByUser(String username) {
         User user = userService.getUserByUsername(username);
         return menuMapper.getMenuByUser(user.getId());
+    }
+
+    @Override
+    public void addMenu(Menu menu) {
+        int maxOrder =  menuMapper.selectOne(new QueryWrapper<Menu>().select("max(menu_order) as menuOrder")).getMenuOrder();
+        menu.setMenuOrder(maxOrder+1);
+        menuMapper.insert(menu);
+    }
+
+    @Transactional
+    @Override
+    public void bindRole(MenuRoleVO vo) {
+        menuMapper.bindRole(vo);
+    }
+
+    @Override
+    public List<Role> currentRole(String menuId) {
+        return menuMapper.currentRole(menuId);
     }
 }

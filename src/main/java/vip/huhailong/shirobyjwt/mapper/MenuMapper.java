@@ -3,6 +3,8 @@ package vip.huhailong.shirobyjwt.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 import vip.huhailong.shirobyjwt.entity.Menu;
+import vip.huhailong.shirobyjwt.entity.Role;
+import vip.huhailong.shirobyjwt.entity.vo.MenuRoleVO;
 
 import java.util.List;
 
@@ -15,4 +17,8 @@ import java.util.List;
 public interface MenuMapper extends BaseMapper<Menu> {
 
     List<Menu> getMenuByUser(@Param("userId") String userId);
+
+    int bindRole(@Param("pojo")MenuRoleVO vo);
+
+    List<Role> currentRole(@Param("menuId")String menuId);
 }

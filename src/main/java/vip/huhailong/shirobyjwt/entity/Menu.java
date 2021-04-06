@@ -23,4 +23,5 @@ public class Menu implements Serializable {
     private String router;
     private String click;
     private String parent;
+    private Integer menuOrder;
 }
