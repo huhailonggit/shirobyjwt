@@ -73,7 +73,7 @@ public class MenuController {
     @PostMapping("delete")
     @RequiresRoles("admin")
     public ResEntity delete(@RequestBody List<String> ids){
-        menuService.removeByIds(ids);
+        menuService.deleteMenu(ids);
         return ResUtil.success(null,"删除成功");
     }
 }

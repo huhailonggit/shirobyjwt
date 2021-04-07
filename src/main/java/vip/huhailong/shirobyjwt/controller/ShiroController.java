@@ -1,9 +1,6 @@
 package vip.huhailong.shirobyjwt.controller;
 
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.wf.captcha.GifCaptcha;
-import com.wf.captcha.SpecCaptcha;
-import com.wf.captcha.utils.CaptchaUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.apache.shiro.crypto.hash.SimpleHash;
@@ -12,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 import vip.huhailong.shirobyjwt.entity.ResEntity;
 import vip.huhailong.shirobyjwt.entity.User;
 import vip.huhailong.shirobyjwt.enums.ResEnum;
@@ -21,11 +17,8 @@ import vip.huhailong.shirobyjwt.util.*;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * @author Huhailong
@@ -89,17 +82,8 @@ public class ShiroController {
         return ResUtil.success(codeToken,"邮件发送成功");
     }
 
-//    public ResEntity checkMailLogin(String code,HttpServletRequest request){
-//        String token = request.getHeader("Authorization");
-//        String username = JwtUtil.getUsername(token);
-//        if(username == null){
-//            return ResUtil.error(ResEnum.SYSTEM_ERROR.getCode(),"邮箱验证码错误");
-//        }
-//        return null;
-//    }
-
     @GetMapping("/captcha")
-    public ResEntity captcha(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public ResEntity captcha() {
         GifCaptcha specCaptcha = new GifCaptcha(130,48,5);
         String verCode = specCaptcha.text().toLowerCase();
         String key = MakeUUID.getUUID(false);

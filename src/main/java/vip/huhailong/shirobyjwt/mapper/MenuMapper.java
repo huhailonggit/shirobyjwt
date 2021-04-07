@@ -21,4 +21,6 @@ public interface MenuMapper extends BaseMapper<Menu> {
     int bindRole(@Param("pojo")MenuRoleVO vo);
 
     List<Role> currentRole(@Param("menuId")String menuId);
+
+    int deleteRoleMenu(@Param("list")List<String> list);
 }

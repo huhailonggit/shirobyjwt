@@ -10,6 +10,13 @@
             </foreach>;
         </if>
     </insert>
+    <delete id="deleteRoleMenu">
+        delete from role_menu where menu_id in (
+        <foreach collection="list" item="item" index="index" separator=",">
+            #{item}
+        </foreach>
+        )
+    </delete>
 
     <select id="getMenuByUser" resultType="vip.huhailong.shirobyjwt.entity.Menu">
         select DISTINCT m.id, menu_name as menuName, menu_icon as menuIcon, router, click, parent

@@ -26,4 +26,6 @@ public interface IMenuService extends IService<Menu> {
     void bindRole(MenuRoleVO vo);
 
     List<Role> currentRole(String menuId);
+
+    void deleteMenu(List<String> ids);
 }

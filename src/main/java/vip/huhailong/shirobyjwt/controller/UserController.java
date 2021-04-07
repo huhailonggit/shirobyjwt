@@ -2,7 +2,7 @@ package vip.huhailong.shirobyjwt.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import lombok.val;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.apache.shiro.crypto.hash.SimpleHash;
@@ -74,28 +74,28 @@ public class UserController {
 
     @GetMapping("/getUserInfoOne")
     @RequiresRoles({"user"})
-    public ResEntity getUserInfoOne(HttpServletRequest request){
-        String token = request.getHeader(HttpHeaders.AUTHORIZATION);
+    public ResEntity getUserInfoOne(){
+        String token = SecurityUtils.getSubject().getPrincipal().toString();
         return ResUtil.success(userService.getUserByUsername(JwtUtil.getUsername(token)),"获取成功");
     }
 
     @GetMapping("/getUserInfo")
     @RequiresRoles("user")
-    public ResEntity getUserInfo(HttpServletRequest request){
-        String token = request.getHeader("Authorization");
+    public ResEntity getUserInfo(){
+        String token = SecurityUtils.getSubject().getPrincipal().toString();
         User user = userService.getUserByUsername(JwtUtil.getUsername(token));
         UserInfo info = infoService.getOne(new QueryWrapper<UserInfo>().eq("user_id",user.getId()));
         return ResUtil.success(info,"获取用户信息成功");
     }
 
     @PostMapping("/updatePassword")
-    public ResEntity updatePassword(@RequestBody Map<String,String> map, HttpServletRequest request){
+    public ResEntity updatePassword(@RequestBody Map<String,String> map){
         String oldPassword = map.get("oldPassword");
         String newPassword = map.get("newPassword");
         if(oldPassword.isEmpty()||newPassword.isEmpty()){
             return ResUtil.error(ResEnum.SYSTEM_ERROR,"密码不能为空");
         }
-        String username = JwtUtil.getUsername(request.getHeader(HttpHeaders.AUTHORIZATION));
+        String username = JwtUtil.getUsername(SecurityUtils.getSubject().getPrincipal().toString());
         User user = userService.getUserByUsername(username);
         if(username==null||user==null){
             return ResUtil.error(ResEnum.UNAUTHORIZED,"token验证失败");

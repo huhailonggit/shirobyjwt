@@ -48,11 +48,11 @@ public class UserInfoController {
     private String webUrl;  //资源网络地址
 
     @PostMapping("/uploadAvatar")
-    public ResEntity uploadAvatar(@RequestParam(value = "file") MultipartFile file, HttpServletRequest request) throws IOException {
+    public ResEntity uploadAvatar(@RequestParam(value = "file") MultipartFile file) throws IOException {
         if(file==null){
             return ResUtil.error(ResEnum.SYSTEM_ERROR,"上传文件为空，请选择文件上传");
         }
-        String token = request.getHeader(HttpHeaders.AUTHORIZATION);
+        String token = SecurityUtils.getSubject().getPrincipal().toString();
         String username = JwtUtil.getUsername(token);
         User currentUser = userService.getUserByUsername(username);
         if(username==null||currentUser==null){
@@ -80,8 +80,8 @@ public class UserInfoController {
 
     @GetMapping("/getUserInfo")
     @RequiresRoles("user")
-    public ResEntity getUserInfo(HttpServletRequest request){
-        String username = JwtUtil.getUsername(request.getHeader(HttpHeaders.AUTHORIZATION));
+    public ResEntity getUserInfo(){
+        String username = JwtUtil.getUsername(SecurityUtils.getSubject().getPrincipal().toString());
         User user = userService.getOne(new QueryWrapper<User>().eq("username", username));
         if(username==null||user==null){
             return ResUtil.error(ResEnum.UNAUTHORIZED,"token验证失败");

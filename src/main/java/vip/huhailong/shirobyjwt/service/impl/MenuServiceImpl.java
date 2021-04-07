@@ -68,4 +68,11 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
     public List<Role> currentRole(String menuId) {
         return menuMapper.currentRole(menuId);
     }
+
+    @Transactional
+    @Override
+    public void deleteMenu(List<String> ids) {
+        menuMapper.deleteRoleMenu(ids);
+        menuMapper.deleteBatchIds(ids);
+    }
 }

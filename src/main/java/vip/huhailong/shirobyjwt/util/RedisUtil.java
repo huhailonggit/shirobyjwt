@@ -28,8 +28,8 @@ public class RedisUtil {
     }
 
     public void add(String key, String value){
-        redisTemplate.expire(key, Duration.ofMillis(CODE_EXPIRE));
         redisTemplate.opsForValue().set(key,value);
+        redisTemplate.expire(key, Duration.ofMillis(CODE_EXPIRE));
     }
 
     public String get(String key){
