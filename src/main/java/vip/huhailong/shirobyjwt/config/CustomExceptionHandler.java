@@ -24,7 +24,7 @@ public class CustomExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResEntity exceptionHandler(Exception e) {
         log.error("error message:" + e.getMessage());
-//        e.printStackTrace();
+        e.printStackTrace();
 
         return ResUtil.error(ResEnum.SYSTEM_ERROR,e.getMessage());
     }

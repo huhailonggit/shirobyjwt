@@ -17,6 +17,7 @@ import vip.huhailong.shirobyjwt.entity.UserInfo;
 import vip.huhailong.shirobyjwt.entity.vo.UserFullInfo;
 import vip.huhailong.shirobyjwt.entity.vo.UserInfoVO;
 import vip.huhailong.shirobyjwt.enums.ResEnum;
+import vip.huhailong.shirobyjwt.log.Log;
 import vip.huhailong.shirobyjwt.service.IUserInfoService;
 import vip.huhailong.shirobyjwt.service.IUserService;
 import vip.huhailong.shirobyjwt.util.FileNameUtil;
@@ -47,6 +48,7 @@ public class UserInfoController {
     @Value(("${file.url}"))
     private String webUrl;  //资源网络地址
 
+    @Log("更改用户头像")
     @PostMapping("/uploadAvatar")
     public ResEntity uploadAvatar(@RequestParam(value = "file") MultipartFile file) throws IOException {
         if(file==null){
@@ -78,6 +80,7 @@ public class UserInfoController {
         return ResUtil.success(webUrl+avatarName,"头像上传成功");
     }
 
+    @Log("查看个人中心")
     @GetMapping("/getUserInfo")
     @RequiresRoles("user")
     public ResEntity getUserInfo(){
@@ -93,12 +96,14 @@ public class UserInfoController {
         return ResUtil.success(info,"查询成功");
     }
 
+    @Log("修改个人信息")
     @PostMapping("/updateUserInfo")
     public ResEntity updateUserInfo(@RequestBody UserInfo userInfo){
         userInfoService.updateById(userInfo);
         return ResUtil.success(null,"更新成功");
     }
 
+    @Log("获取用户列表")
     @GetMapping("/getUserInfoList")
     public ResEntity getUserInfoList(UserInfoVO vo){
         IPage<UserInfoVO> userInfoList = userInfoService.getUserInfoList(vo);

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import vip.huhailong.shirobyjwt.entity.ResEntity;
 import vip.huhailong.shirobyjwt.entity.User;
 import vip.huhailong.shirobyjwt.enums.ResEnum;
+import vip.huhailong.shirobyjwt.log.Log;
 import vip.huhailong.shirobyjwt.service.IUserService;
 import vip.huhailong.shirobyjwt.util.*;
 
@@ -39,6 +40,7 @@ public class ShiroController {
     @Value("${server-mail.url}")
     private String url;
 
+    @Log("登录系统")
     @PostMapping("/login")
     public ResEntity login(String username, String password, String verCode, String verKey) throws MessagingException {
         if(!redisUtil.exitsKey(verKey)){

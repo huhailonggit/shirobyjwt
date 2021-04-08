@@ -17,6 +17,7 @@ import vip.huhailong.shirobyjwt.entity.User;
 import vip.huhailong.shirobyjwt.entity.UserInfo;
 import vip.huhailong.shirobyjwt.entity.vo.UserRoleVO;
 import vip.huhailong.shirobyjwt.enums.ResEnum;
+import vip.huhailong.shirobyjwt.log.Log;
 import vip.huhailong.shirobyjwt.service.IUserInfoService;
 import vip.huhailong.shirobyjwt.service.IUserService;
 import vip.huhailong.shirobyjwt.util.JwtUtil;
@@ -72,6 +73,7 @@ public class UserController {
         return ResUtil.success(null,"注册成功，请前往邮箱激活");
     }
 
+    @Log("访问个人中心")
     @GetMapping("/getUserInfoOne")
     @RequiresRoles({"user"})
     public ResEntity getUserInfoOne(){
@@ -79,6 +81,7 @@ public class UserController {
         return ResUtil.success(userService.getUserByUsername(JwtUtil.getUsername(token)),"获取成功");
     }
 
+    @Log("访问个人中心")
     @GetMapping("/getUserInfo")
     @RequiresRoles("user")
     public ResEntity getUserInfo(){
@@ -88,6 +91,7 @@ public class UserController {
         return ResUtil.success(info,"获取用户信息成功");
     }
 
+    @Log("修改密码")
     @PostMapping("/updatePassword")
     public ResEntity updatePassword(@RequestBody Map<String,String> map){
         String oldPassword = map.get("oldPassword");
