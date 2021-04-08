@@ -32,8 +32,8 @@ import java.util.*;
 @Aspect
 @Component
 public class LogAspect {
-    @Value("${log.location}")
-    private boolean openLocation;   //是否开启记录ip来源配置
+//    @Value("${log.location}")
+//    private boolean openLocation;   //是否开启记录ip来源配置
     @Resource
     AddressUtil addressUtil;
     @Resource
@@ -91,10 +91,10 @@ public class LogAspect {
         }
         String ipAddress = IPUtil.getIpAddress(request);    //获取ip地址
         log.setIpAddress(ipAddress);    //设置IP地址
-        if(openLocation){
-            String location = addressUtil.getLocation(ipAddress);
-            log.setLocation(location);
-        }
+//        if(openLocation){ //解析IP地址来源
+//            String location = addressUtil.getLocation(ipAddress);
+//            log.setLocation(location);
+//        }
         log.setCreateTime(TimeUtil.getDateTime());
         log.setRunTime(time);
         log.setUserId(username);
