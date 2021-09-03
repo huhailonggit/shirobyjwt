@@ -14,7 +14,7 @@ spring:
   mail:
     host: smtp.exmail.qq.com
     username: huhailong@huhailong.vip
-    password: Hhl.vip110120119
+    password: ddddddd
     default-encoding: utf-8
     port: 465
     properties:
